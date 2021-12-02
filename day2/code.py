@@ -11,14 +11,29 @@ from copy import deepcopy #deepcopy() let's use copy a list without reference ar
 def run(filename):
     print("Running",filename+"...")
 
-    #lines = open(filename)
-    #lines = open(filename).read().split('\n\n')
     lines = open(filename).read().splitlines()
-    #lines = list(map(int,lines))
-
+    depth = 0
+    hor = 0
     for line in lines:
-        pass
+        dir,num = line.split()
+        num = int(num)
+        if dir == "forward": hor += num
+        elif dir == "down": depth += num
+        else: depth -= num
+    print(depth*hor)
 
+    p2_depth = 0
+    p2_hor = 0
+    p2_aim = 0
+    for line in lines:
+        dir,num = line.split()
+        num = int(num)
+        if dir == "forward":
+            p2_hor += num
+            p2_depth += p2_aim * num
+        elif dir == "down": p2_aim += num
+        else: p2_aim -= num
+    print(p2_hor*p2_depth)
 
 run("example.txt")
 print()
