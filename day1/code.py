@@ -13,8 +13,8 @@ def run(filename):
     ans1 = 0
     lines = open(filename).read().splitlines()
     lines = list(map(int,lines))
-    for line in range(len(lines)-1):
-        if lines[line] < lines[line+1]:
+    for a in range(len(lines)-1):
+        if lines[a] < lines[a+1]:
             ans1 += 1
     
     ans2 = 0
