@@ -12,8 +12,8 @@ def run(filename):
     print("Running",filename+"...")
 
     lines = list(map(int,open(filename).read().split(',')))
-    print(min(sum(abs(i-j) for i in lines) for j in range(max(lines))))
-    print(min(sum(abs(i-j)*(abs(i-j)+1)//2 for i in lines) for j in range(max(lines))))
+    print(min(sum(abs(i-j) for i in lines) for j in range(max(lines)+1)))
+    print(min(sum(abs(i-j)*(abs(i-j)+1)//2 for i in lines) for j in range(max(lines)+1)))
 
 run("example.txt")
 print()
