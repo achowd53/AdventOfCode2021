@@ -4,6 +4,7 @@ import collections #defaultdicts, maybe counters
 import functools #use @functools.lru_cache(None) above a function to keep track of all inputs and speed it up
 import string #ascii_uppercase, ascii_lowercase, etc..
 import itertools #itertools.product(range(a),range(b),[1,2,3]) allows for nested for loops in one line essentially
+import networkx #Networkx for graph problems like connected components
 from copy import deepcopy #deepcopy() let's use copy a list without reference areas
 #Sets are POG {}, A|B finds union of sets, A&B finds intersection, A-B finds difference, A^B is (A|B)-(A&B)
 #Python has complex numbers of the form x+yj (1+1j) or complex(x,y) (complex(1,1))
