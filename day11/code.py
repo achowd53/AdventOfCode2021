@@ -11,33 +11,25 @@ from copy import deepcopy #deepcopy() let's use copy a list without reference ar
 
 def run(filename):
     print("Running",filename+"...")
-
-    #lines = open(filename)
-    #lines = open(filename).read().split('\n\n')
-    octo = np.array([list(map(int,list(line))) for line in open(filename).read().splitlines()])
-    flash = 0
+   
+    grid = np.array([list(map(int,list(line))) for line in open(filename).read().splitlines()]).reshape(100,)
+    flashes = 0
     for step in range(1,1000):
-        octo += 1
-        flashed = set()
-        new_flash = True
-        while new_flash:
-            new_flash = False
-            for i in range(len(octo)):
-                for j in range(len(octo[0])):
-                    if octo[i][j] > 9 and (i,j) not in flashed:
-                        new_flash = True
-                        flash += 1
-                        flashed.add((i,j))
-                        for x,y in itertools.product([-1,0,1],[-1,0,1]):
-                            if x == 0 and y == 0: continue
-                            if -1 < i+y < len(octo) and -1 < j+x < len(octo[0]):
-                                octo[i+y][j+x] += 1
-        for x,y in flashed: octo[x][y] = 0
-        if step == 100: print(flash)
-        if octo[octo == 0].shape[0] == 100:
-            print(step)
-            break
-
+        flashed = np.zeros((100), dtype=bool)  
+        grid += 1        
+        new_flash = (grid > 9)
+        while np.any(new_flash):
+            flashed |= new_flash                  
+            for idx in np.where(new_flash)[0]:
+                for i in [-11,-10,-9,-1,1,9,10,11]:
+                    if abs(idx%10-(idx+i)%10)+abs(idx//10-(idx+i)//10) < 3 and -1 < idx+i < 100:
+                        grid[i+idx] += 1
+            new_flash = (grid > 9) & (~flashed)
+        grid[flashed] = 0
+        if step < 101: flashes += np.sum(flashed)
+        if np.all(grid==0): break
+    print(flashes)
+    print(step)
 
 run("example.txt")
 print()
