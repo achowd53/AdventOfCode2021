@@ -12,28 +12,31 @@ from copy import deepcopy #deepcopy() let's use copy a list without reference ar
 def run(filename):
     print("Running",filename+"...")
 
-    lines = open(filename).read().splitlines()
-    points1 = {')':3,']':57,'}':1197,'>':25137}
-    points2 = {'(':1,'[':2,'{':3,'<':4}
-    ans1 = 0
-    ans2 = []
-    for line in lines:
-        stack = []
-        for char in line:
-            if char in "([{<":
-                stack.append(char)
-            else:
-                if abs(ord(char) - ord(stack.pop())) > 3:
-                    ans1 += points1[char]
-                    break
-        else:
-            ans2.append(0)
-            while stack:
-                ans2[-1] = ans2[-1]*5 + points2[stack.pop()]
-    print(ans1)
-    print(sorted(ans2)[len(ans2)//2])
-
-            
+    #lines = open(filename)
+    #lines = open(filename).read().split('\n\n')
+    octo = np.array([list(map(int,list(line))) for line in open(filename).read().splitlines()])
+    flash = 0
+    for step in range(1,1000):
+        octo += 1
+        flashed = set()
+        new_flash = True
+        while new_flash:
+            new_flash = False
+            for i in range(len(octo)):
+                for j in range(len(octo[0])):
+                    if octo[i][j] > 9 and (i,j) not in flashed:
+                        new_flash = True
+                        flash += 1
+                        flashed.add((i,j))
+                        for x,y in itertools.product([-1,0,1],[-1,0,1]):
+                            if x == 0 and y == 0: continue
+                            if -1 < i+y < len(octo) and -1 < j+x < len(octo[0]):
+                                octo[i+y][j+x] += 1
+        for x,y in flashed: octo[x][y] = 0
+        if step == 100: print(flash)
+        if octo[octo == 0].shape[0] == 100:
+            print(step)
+            break
 
 
 run("example.txt")
