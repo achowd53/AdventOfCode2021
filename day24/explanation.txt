@@ -1,0 +1,56 @@
+inp w
+mul x 0
+add x z
+mod x 26
+div z a
+add x b
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y c
+mul y x
+add z y
+
+The input is a pattern that repeats 14x except for the values a, b, and c
+Taking this chunk, we can summarize it to:
+    w = inp
+    x = (z%26+b != w)
+    z = z//a 
+    z = z*(25x+1)
+    z = z + (w+c)x
+
+Looking across the inputs we can also make the observation that a either equals 1 or 26.
+When a = 1:
+    z = z//a = z//1 = z
+    We can also notice that when a = 1, b >= 10. What this means is that:
+        (z%26 != w-b) where w <= 9, so (z%26 != negative number) and z%26 must be positive
+        So, (z%26 + b != w) always equals 1 when b >= 10 which occurs in the input when a = 1
+    The chunk can be summarized when a = 1 to:
+        w = inp
+        z = z*26
+        z = z + (w+c)
+    Notice this is equivalent to "pushing" a number (w+c) in base 26, which will come into play in a bit
+When a = 26:
+    z%26 grabs the last base number pushed
+    z = z//a = z//26 or removes the last (w+c) that was "pushed"
+    So, when a = 26, it is equivalent to "popping" a number (w+c) into z%26
+
+Now observe, a = 1, 7 times, and a = 26, 7 times.
+So, in order to make z = 0 at the end, since we know a=1 pushes a value, we need to pop a value every a = 26
+To ensure this occurs, we also have to make sure that the following steps Do Not cause another value to be pushed when a = 26:
+    z = z*(25x+1)
+    z = z + (w+c)x
+So, to do this we must make x = 0 so neither statement causes z to change:
+    x = 0 = (z%26+b != w) is true when z%26+b == w
+    z%26 as stated before pops off the last (w+c) pushed 
+    So, x is 0 when the popped (w+c) == the new (w-b).
+
+To solve for an input all we need to do is apply this pushing and popping logic to generate constraints for the problem
+Where you want to get the maximum possible values for earlier input value, w's, for part1 and 
+the minimum possible values for earlier input value, w's, for part2.
