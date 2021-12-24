@@ -20,9 +20,7 @@ def solve(part1): # 1 for part1, -1 for part2
 	model = {i:constraints[i] for i in range(14)}
 	best_value = 9 if part1==1 else 1
 	for idx in model:
-		if isinstance(model[idx], tuple):
-			model[idx] = best_value
-		elif isinstance(model[idx], list):
+		if isinstance(model[idx], list):
 			values = (best_value-part1*abs(model[idx][1]), best_value)[::part1]
 			model[model[idx][0]] = values[model[idx][1] < 0]
 			model[idx] = values[model[idx][1] > 0]
