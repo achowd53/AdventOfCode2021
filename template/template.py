@@ -24,4 +24,4 @@ def run(filename):
 
 run("example.txt")
 print()
-run("day12.txt")
+run("day.txt")
